@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    <script type="text/javascript" src="{{ url_for('static', filename = 'results.js') }}"></script>
+    <script src="results.js"></script> 
+    
+    <script>
+        
+
+        let data = {{data_second|tojson}} 
+        let seconddata={{second_result|tojson}}
+        let third_data = {{third_result|tojson}}
+        let feedback = {{feedback_result|tojson}}
+       
+        console.log(data)
+        console.log(seconddata)
+        console.log(third_data)
+
+        $(document).ready(function() {
+
+            results_number = 0;
+
+           
+            if(seconddata.length!=0 || data.length!=0 || third_data.length!=0){
+
+                results_number = seconddata.length+data.length+third_data.length;
+
+                $('#display_result_area').append('<div class="resultid">'+results_number+ ' results found: </div>');
+
+                $.each(seconddata,function(index, value){
+
+                let prettycats = value.stream
+                let pattern = new RegExp("("+feedback+")", "gi");
+                        prettycats=prettycats.replace(pattern, '<span style="background-color: yellow;">$&</span>');
+                let secondnewcat = '<a href="http://127.0.0.1:5000/view/'+value.id+'"> streaming on: '+prettycats+'</a>'
+                $('#display_result_area').append('<div id="unique1">' +secondnewcat+ '</div>');
+                    
+
+                })
+
+                $.each(data,function(index, value){
+                    
+                    let nicecats = value.title
+                    console.log(nicecats)
+                    let pattern = new RegExp("("+feedback+")", "gi");
+                    console.log(pattern)
+                        nicecats= nicecats.replace(pattern, '<span style="background-color: yellow;">$&</span>');
+                    let  newcat = '<a href="http://127.0.0.1:5000/view/'+value.id+'">'+nicecats+'</a>'
+                    $('#display_result_area').append('<div id="unique2">' +newcat+ '</div>');
+                    
+                })
+
+                $.each(third_data,function(index, value){
+                 
+                    let furrycats = value.directors
+                    let newfurrycats = furrycats.join(",")
+                        let pattern = new RegExp("("+feedback+")", "gi");
+                        newfurrycats= newfurrycats.replace(pattern, '<span style="background-color: yellow;">$&</span>');
+                        let newpattern = 'Directed by '+newfurrycats+' :  <a href="http://127.0.0.1:5000/view/'+value.id+'"> '+value.title+' </a>'
+                        $('#display_result_area').append('<div id="unique3">' +newpattern+ '</div>');
+                    
+                })
+
+            }
+
+
+            else{
+                results_number=0;
+                $('#display_result_area').append('<div class="unique">'+results_number+' (zero) results found. </div>');
+            
+            }
+        })
+        
+        
+    </script>
+
+
+
+<div class="container"> 
+    
+    <br></br>
+    
+    <div class="results_div">
+        Search results for "{{feedback_result}}": 
+    
+    </div>
+    <br></br>
+    <div id="display_result_area">
+        
+    </div>
+    
+</div>
+
+
+
+{% endblock %}
+

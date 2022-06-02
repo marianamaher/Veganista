@@ -1,0 +1,47 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'home_page.js') }}"></script>
+
+<script>
+$(document).ready(function() {
+    
+    let newdata = {{data_first|tojson}}
+
+    $.each(newdata,function(index, value){
+        
+        
+        let fatcats = $('<a href="http://127.0.0.1:5000/view/'+value.id+'"><div class="titleunico">'+value.title+'</div></a>')
+        let uglycats = $('<div class="col-md-4">');
+        uglycats.append('<a href="http://127.0.0.1:5000/view/'+value.id+'"><img class="card-img-top" alt="documentary cover for '+value.title+'" src='+value.image+'></a>')
+        uglycats.append('<div class="card-text"> &#11088; Score: '+value.score+ '</div>')
+        uglycats.append(fatcats)
+        $('#homepage_links').append(uglycats);
+        
+
+    })
+
+})
+
+
+    
+</script>
+  
+    <div class="row firstrow" id="welcome_title">
+        <b>Let's save millions, one bite at a time. </b>
+        <div class="welcometext"> 
+            Tackling topics ranging from earth's conservation to animal rights,
+            here you will find the documentaries that should be on <i>everyone's</i> watchlist.<p>
+            To start, here are three <b> top-rated </b> documentaries that could change the way you live:</p>
+        </div>
+    </div>
+    <p></p> 
+
+    <div class="row contentrow" id="homepage_links">
+
+    </div>
+
+
+{% endblock %}

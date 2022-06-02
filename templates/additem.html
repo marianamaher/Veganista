@@ -1,0 +1,215 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<script>
+
+    function display_id(tempid){
+
+        let angrycows ='<a href="http://127.0.0.1:5000/view/'+tempid+'"><u><b> here</b></u></a>'
+        $('.alertrow').append('<div class="alert-text"> New item successfully created! See it ' +angrycows+ '</div>');
+
+    }
+
+    function save_entry(newentry){
+
+        $.ajax({
+        type: "POST",
+        url: "add",                
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data : JSON.stringify(newentry),
+        success: function(result){
+            let all_data = result;
+            console.log(result);
+            let newidreturned = result["id"];
+            display_id(newidreturned);
+            let form_title = $("#doctitle").val("")
+            let form_image = $("#docpic").val("")
+            let form_year =$("#docyear").val("")
+            let form_summary = $("#docsummary").val("")
+            let form_directors =$("#docdirector").val("")
+            let form_score= $("#docscore").val("")
+            let form_stream= $("#docstream").val("")
+            $("#doctitle").focus()
+
+        },
+        error: function(request, status, error){
+            console.log("Error");
+            console.log(request)
+            console.log(status)
+            console.log(error)
+        }
+        
+    });
+
+    }
+
+
+    $(document).ready(function(e) {  
+
+
+        let form_title = $("#doctitle").val()
+        $("#doctitle").focus()
+
+        $("#form-button").click(function(event){
+
+            let form_title = $.trim($("#doctitle").val())
+            let form_image = $.trim($("#docpic").val())
+            let form_year = $.trim($("#docyear").val())
+            let form_summary = $.trim($("#docsummary").val())
+            let form_directors = $.trim($("#docdirector").val())
+            let form_score= $.trim($("#docscore").val())
+            let form_stream= $.trim($("#docstream").val())
+
+            let validation = false;
+
+            $('.colunatitulo').empty();
+            $('.colunapic').empty();
+            $('.colunayear').empty();
+            $('.colunasummary').empty();
+            $('.colunadirectors').empty();
+            $('.colunascore').empty();
+            $('.colunastream').empty();
+
+
+            if(form_summary.length==0){
+                let happy_cows = $('<div class="red-alert"> Please provide a valid summary. </div>');
+                $('.colunasummary').append(happy_cows);
+                $("#docsummary").focus()
+                validation=true;
+            }
+            if(form_directors.length==0 || $.isNumeric(form_directors)){
+                let happy_cows = $('<div class="red-alert"> Please provide a valid director(s). </div>');
+                $('.colunadirectors').append(happy_cows);
+                $("#docdirector").focus()
+                validation=true;
+            }
+            if(form_stream.length==0 || $.isNumeric(form_stream)){
+                let happy_cows = $('<div class="red-alert"> Please provide a valid data. </div>');
+                $('.colunastream').append(happy_cows);
+                $("#docstream").focus()
+                validation=true;
+            }
+            if(form_image.length==0){
+                let happy_cows = $('<div class="red-alert"> Please provide a valid URL. </div>');
+                $('.colunapic').append(happy_cows);
+                validation=true;
+                $("#docpic").focus()
+            }
+            if(form_score.length==0 || !$.isNumeric(form_score)){
+                let happy_cows = $('<div class="red-alert"> Please provide a valid score. </div>');
+                $('.colunascore').append(happy_cows);
+                $("#docscore").focus()
+                validation=true;
+            }
+            if(form_year.length==0 || !$.isNumeric(form_year)){
+                let happy_cows = $('<div class="red-alert"> Please provide a valid year. </div>');
+                $('.colunayear').append(happy_cows);
+                $("#docyear").focus()
+                validation=true;
+            }
+            if(form_title.length==0){
+                let happy_cows = $('<div class="red-alert"> Please provide a valid title. </div>');
+                $('.colunatitulo').append(happy_cows);
+                validation=true;
+                $("#doctitle").focus()
+            }
+            
+
+            if(validation==true){
+                return false;
+            }
+            
+            else{
+            let new_doc_entry = {title:form_title, image:form_image, year:form_year, summary:form_summary, directors: [form_directors], score:form_score, stream:form_stream}
+
+            save_entry(new_doc_entry)
+            
+            }
+        })
+
+    })
+
+</script>
+
+
+<div class="container-fluid" id="container_for_edit">
+    <div class="row alertrow">
+    </div>
+    <div class="formcontainer" id="myform">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="doctitle0">Documentary title</label>
+                <input type="text" class="form-control" id="doctitle" aria-describedby="emailHelp" placeholder="Enter title">
+            </div>
+        </div>
+        <p></p>
+        <div class="colunatitulo"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-3">
+                    <label for="doctitle">Year</label>
+                    <input type="text" class="form-control" id="docyear" placeholder="e.g. 2007">
+            </div>
+            <div class="col-md-3">
+                <label for="docscore">Score</label>
+                <input type="text" class="form-control" id="docscore" placeholder="e.g. 9.2">
+            </div>
+        </div>
+        <div class="row no-gutters" id="specialrow">
+            <div class="col-md-3 colunayear"></div>
+            <div class="col-md-3 colunascore"></div>
+        </div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docimage">Image</label>
+                <input type="text" class="form-control" id="docpic" placeholder="Please paste a valid URL.">
+            </div>
+        </div>
+        <p></p>
+        <div class="colunapic"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docstream">Streaming on </label>
+                <input type="text" class="form-control" id="docstream" placeholder="e.g. Netflix">
+            </div>
+        </div>
+        <p></p>
+        <div class="colunastream"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docdirectors">Directors</label>
+                <input type="text" class="form-control" id="docdirector" placeholder="e.g. Mariana Maher">
+                <small id="emailHelp" class="form-text text-muted">Please separate by comma if more than one.</small>
+            </div>
+        </div>
+        <p></p>
+        <div class="colunadirectors"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docsummary">Summary</label>
+                <textarea class="form-control" id="docsummary" rows="3"></textarea>
+            </div>
+        </div>
+        <p></p>
+        <div class="colunasummary"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                 <button type="button" class="btn btn-primary" id="form-button">Submit</button>
+            </div>
+        </div>
+        <p></p>
+    </div>
+</div>
+
+
+
+{% endblock %}

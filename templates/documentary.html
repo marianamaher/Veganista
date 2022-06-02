@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    let last_data = {{data_third|tojson}} 
+    console.log(last_data)
+
+    $(document).ready(function() {
+        $.each(last_data,function(key, value){
+            console.log(value.stream)
+            $('.display_docs').append('<p><div id="image"> <img id="thisimage" alt="documentary poster for '+value.title+'" src='+value.image+'></div>');
+            $('.display_docs').append('<p><div id="year"> <b>Year: </b>' +value.year+'</div>');
+            $('.display_docs').append('<div id="score"><b>Score: </b>' +value.score+' &#11088 &#11088 &#11088 &#11088 &#11088</div></p>');
+            $('.display_docs').append('<div id="summary"><b>Summary: </b>' +value.summary+'</div>');
+            $('.display_docs').append('<p><div id="directors"><b>Directors: </b>' +value.directors+'</div>');
+            $('.display_docs').append('<div id="directors"><b>Stream on: </b> <a href="http://127.0.0.1:5000/results_page/'+value.stream+'">' +value.stream+'</a></div>');
+            $('.display_docs').append('<button class="button-14" role="button"> Edit item </button></p>')
+        
+            $(".button-14").click(function(){
+            window.location.href = ("/edit/" + value.id)
+
+        }); 
+        
+        })
+
+
+    })
+</script>
+
+<div class="container" id="view-container"> 
+    
+    <br></br>
+    
+    <div id="final_results_div">
+        This is <b>{{lazycats_title}}</b>: 
+    </div>
+    <p></p>
+    <div class="display_docs">
+
+    
+    </div>
+    <p></p>
+    
+</div>
+
+
+{% endblock %}

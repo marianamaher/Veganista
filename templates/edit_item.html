@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+
+<script>
+
+    let new_data = {{newdata|tojson}}
+    let id ={{id|tojson}}
+
+    console.log(new_data)
+
+
+    function confirmAction(itemid) {
+        let confirmAction = confirm("Are you sure?");
+        if (confirmAction) {
+            window.location.href = ("/view/" +id);
+        } 
+        else {
+          return exit;
+        }
+    }
+
+
+    $(document).ready(function() {
+
+        $.each(new_data,function(key, value){
+            console.log(value.id)
+        
+            $("#form-button").click(function(event){
+
+                event.preventDefault();
+                let serial_title= $('#doctitle').val();
+                let serial_year= $('#docyear').val();
+                let serial_score= $('#docscore').val();
+                let serial_image= $('#docpic').val();
+                let serial_stream= $('#docstream').val();
+                let serial_direc= $('#docdirector').val();
+                let serial_summary= $('#docsummary').val();
+
+                let request= $.post("/view/"+id, {'serial_title': serial_title, 'serial_year':serial_year, 'serial_score':serial_score,'serial_image':serial_image, 'serial_stream':serial_stream, 'serial_direc':serial_direc, 'serial_summary':serial_summary,});
+                    
+                request.done(function (response, textStatus, jqXHR){
+                    window.location.href = ("/view/" + id)
+                })
+                })
+
+            $("#discard-button").click(function(event){
+                confirmAction(id)
+            })
+        })
+    })
+
+</script>
+
+
+<div class="container-fluid" id="container_for_edit">
+    <div class="row alertrow">
+    </div>
+    <form class="formcontainer" id="myform" method="POST">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="doctitle0">Documentary title</label>
+                <input type="text" class="form-control" name="title" id="doctitle" aria-describedby="emailHelp" value="{{newdata.title}}">
+            </div>
+        </div>
+        <p></p>
+        <div class="colunatitulo"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-3">
+                    <label for="doctitle6">Year</label>
+                    <input type="text" class="form-control" id="docyear" name="year" value="{{newdata.year}}">
+            </div>
+            <div class="col-md-3">
+                <label for="docscore">Score</label>
+                <input type="text" class="form-control" id="docscore" name="score" value="{{newdata.score}}">
+            </div>
+        </div>
+        <div class="row no-gutters" id="specialrow">
+            <div class="col-md-3 colunayear"></div>
+            <div class="col-md-3 colunascore"></div>
+        </div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docimage">Image</label>
+                <input type="text" class="form-control" id="docpic" name="image" value="{{newdata.image}}">
+            </div>
+        </div>
+        <p></p>
+        <div class="colunapic"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docstream">Streaming on </label>
+                <input type="text" class="form-control" id="docstream" name="stream" value="{{newdata.stream}}">
+            </div>
+        </div>
+        <p></p>
+        <div class="colunastream"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docdirectors">Directors</label>
+                <input type="text" class="form-control" id="docdirector" name="directors" value="{{newdata.directors}}">
+                <small id="emailHelp" class="form-text text-muted">Please separate by comma if more than one.</small>
+            </div>
+        </div>
+        <p></p>
+        <div class="colunadirectors"></div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="docsummary">Summary</label>
+                <textarea class="form-control" id="docsummary" name="summary" rows="3">{{newdata.summary}}</textarea>
+            </div>
+        </div>
+        <p></p>
+        <div class="colunasummary"></div>
+        <p></p>
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary" id="discard-button">Discard change</button>
+               </div>
+                <div class="col-md-3">
+                     <button type="button" class="btn btn-primary" id="form-button">Submit</button>
+                </div>
+            </div>
+        <p></p>
+    </form>
+</div>
+
+
+
+{% endblock %}
