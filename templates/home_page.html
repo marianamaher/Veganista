@@ -16,7 +16,7 @@ $(document).ready(function() {
         let fatcats = $('<a href="http://127.0.0.1:5000/view/'+value.id+'"><div class="titleunico">'+value.title+'</div></a>')
         let uglycats = $('<div class="col-md-4">');
         uglycats.append('<a href="http://127.0.0.1:5000/view/'+value.id+'"><img class="card-img-top" alt="documentary cover for '+value.title+'" src='+value.image+'></a>')
-        uglycats.append('<div class="card-text"> &#11088; Score: '+value.score+ '</div>')
+        uglycats.append('<div class="card-text"> &#9733; Score: '+value.score+ '</div>')
         uglycats.append(fatcats)
         $('#homepage_links').append(uglycats);
         
@@ -35,10 +35,12 @@ $(document).ready(function() {
     </div>
     <br>
     <div class="row welcometext"> 
-            Tackling topics ranging from earth's conservation to animal rights,
-            here you will find the documentaries that should be on <i>everyone's</i> watchlist.<p>
+            <div class="simple_class">Tackling topics ranging from earth's conservation to animal rights, find the documentaries that should be on <i>everyone's</i> watchlist.
+            <br>
+            <br>
             To start, here are three <b> <u>top-rated</u> </b> documentaries that could change the way you live:</p>
-    </div>
+            </div>
+        </div>
     <p></p> 
 
     <div class="row contentrow" id="homepage_links"></div>

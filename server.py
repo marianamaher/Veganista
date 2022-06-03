@@ -4,10 +4,10 @@ from flask import Response, request, jsonify
 app = Flask(__name__)
 
 
-current_id=10;
+current_id = 10
 
 data = {
- 
+
     "1": {
         "id": "1",
         "title": "Cowspiracy",
@@ -58,7 +58,7 @@ data = {
         "title": "Seaspiracy",
         "image": "https://hrflix.eu/img/vertical/large/81014008.jpg",
         "year": "2021",
-        "summary": "Seaspiracy is a 2021 documentary film about the environmental impact of fishing directed by and starring Ali Tabrizi, a British filmmaker. The film examines various human impacts on marine life and advocates for ending fish consumption. Tabrizi acts as both the narrator and protagonist of the film, discovering key pieces of information at the same moment as the viewer. This framing device serves to provide narrative momentum and suspense. The film centers early on the collapse of whale, shark, dolphin and sea turtle populations. The film asserts that the focus of environmental groups on comparatively small consumer plastics like straws has obfuscated the larger problem of plastic waste from fishing gear, or ghost nets, as well as the devastation of bycatch. The film also suggests environmental organizations have been unable to define or effectively implement sustainable fishing, sustainable seafood or dolphin-safe products. These criticisms are particularly focused on the Marine Stewardship Council, the Earth Island Institute and the Plastic Pollution Coalition. The film's settings are global, including the Taiji dolphin drive hunt in southern Japan, whaling in the Faroe Islands, Thai and Chinese fish markets, coastal West Africa, and salmon aquaculture farms in Scotland. At various moments, Tabrizi and his crew appear to face imminent peril from local authorities or corrupt fishing industry players; some of the action is presented through hidden camera techniques, and animation is used to depict scenes of violence. Activities of the Sea Shepherd Conservation Society—an American conservation group focused on direct action at sea—feature prominently in the film, including an extended section documenting illegal fishing practices and worker exploitation in Liberian waters. The film also includes an investigation into modern slavery conditions on Thai fishing vessels, and interviews several survivors.That the cessation of fish consumption is the solution to collapsing fish stocks and human exploitation remains a consistent message throughout the film. Statistics repeatedly buttress this point, including various fish species listed at >90% wild population loss, and the claim that global oceans could be essentially devoid of fish by 2048. The possibility of fish farming aquaculture is introduced, only to be dismissed after a trip to Scotland. The film suggests the problem of feed for farmed fish as well as the prevalence of disease and coastal degradation make aquaculture untenable.",
+        "summary": "Seaspiracy is a 2021 documentary film about the environmental impact of fishing directed by and starring Ali Tabrizi, a British filmmaker. The film examines various human impacts on marine life and advocates for ending fish consumption. Tabrizi acts as both the narrator and protagonist of the film, discovering key pieces of information at the same moment as the viewer. The film centers early on the collapse of whale, shark, dolphin and sea turtle populations. The film asserts that the focus of environmental groups on comparatively small consumer plastics like straws has obfuscated the larger problem of plastic waste from fishing gear, or ghost nets, as well as the devastation of bycatch. The film suggests the problem of feed for farmed fish as well as the prevalence of disease and coastal degradation make aquaculture untenable.",
         "directors": ["Ali Tabrizi, Kip Andersen"],
         "score": "8.2",
         "stream": "netflix",
@@ -119,50 +119,46 @@ data = {
         "stream": "youtube"
 
     }
- 
+
 }
 
 
 # ROUTES
-  
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
 
-    home_link =[];
-    empty_arr ={};
-   
-    for key,value in data.items():
-        if(key=='1' or key=='2' or key=='9'):
-            empty_arr[key]= value;
-    for key,value in empty_arr.items():
-        home_link.append(value);
+    home_link = []
+    empty_arr = {}
 
+    for key, value in data.items():
+        if(key == '1' or key == '2' or key == '9'):
+            empty_arr[key] = value
+    for key, value in empty_arr.items():
+        home_link.append(value)
 
-    return render_template('home_page.html', data_first = home_link, lateadd=empty_arr)  
+    return render_template('home_page.html', data_first=home_link, lateadd=empty_arr)
 
 
 @app.route('/results_page/<doc_title>')
 def results_page(doc_title=None):
-    
-    final_result=[];
-    second_result=[];
-    third_result=[];
 
+    final_result = []
+    second_result = []
+    third_result = []
 
-    for key,value in data.items():
+    for key, value in data.items():
         titulo = value["title"].lower()
         diretores = value["directors"]
         assistir = value["stream"].lower()
-
 
         for i in range(len(diretores)):
             diretores[i] = diretores[i].lower()
             novodiretores = diretores[i]
 
             if novodiretores == doc_title or doc_title in novodiretores:
-                 third_result.append(value)
-        
+                third_result.append(value)
 
         if titulo == doc_title or doc_title in titulo:
             final_result.append(value)
@@ -170,30 +166,25 @@ def results_page(doc_title=None):
         if assistir == doc_title or doc_title in assistir:
             second_result.append(value)
 
-
-
-    
     return render_template('results.html', data_second=final_result, feedback_result=doc_title, second_result=second_result, third_result=third_result)
 
-@app.route('/view/<id>', methods=['GET','POST'])
-def view(id=None):
-    lazycats=[]
-    random=""
-    
 
+@app.route('/view/<id>', methods=['GET', 'POST'])
+def view(id=None):
+    lazycats = []
+    random = ""
 
     if request.method == 'POST':
 
-        ed_title= request.form['serial_title']
-        ed_year= request.form['serial_year']
-        ed_score=request.form['serial_score']
-        ed_image= request.form['serial_image']
-        ed_stream= request.form['serial_stream']
-        ed_directors= request.form['serial_direc'].split(",")
-        ed_summary= request.form['serial_summary']
+        ed_title = request.form['serial_title']
+        ed_year = request.form['serial_year']
+        ed_score = request.form['serial_score']
+        ed_image = request.form['serial_image']
+        ed_stream = request.form['serial_stream']
+        ed_directors = request.form['serial_direc'].split(",")
+        ed_summary = request.form['serial_summary']
 
-
-        edited_data_entry ={
+        edited_data_entry = {
             "id": id,
             "title": ed_title,
             "image":  ed_image,
@@ -204,18 +195,15 @@ def view(id=None):
             "stream":  ed_stream,
         }
 
-
-        data[id]=edited_data_entry
+        data[id] = edited_data_entry
 
         print(data)
         print(edited_data_entry)
 
-
         #     return data[id]
 
-   
-    for key,value in data.items():
-        if value["id"]==id:
+    for key, value in data.items():
+        if value["id"] == id:
             lazycats.append(value)
             random = value["title"]
             print(lazycats)
@@ -228,7 +216,7 @@ def view(id=None):
 def add():
     global current_id
     global data
-    
+
     json_data = request.get_json()
 
     current_id += 1
@@ -240,7 +228,7 @@ def add():
     newdirectors = json_data["directors"]
     newscore = json_data["score"]
     newstream = json_data["stream"]
-    
+
     new_doc_entry = {
 
         "id": new_id,
@@ -253,12 +241,13 @@ def add():
         "stream":  newstream,
     }
 
-    data[new_id]=(new_doc_entry)
+    data[new_id] = (new_doc_entry)
 
     print(new_doc_entry)
     print(data)
 
     return new_doc_entry
+
 
 @app.route('/add_item_page', methods=['GET', 'POST'])
 def add_item_page():
@@ -269,18 +258,11 @@ def add_item_page():
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 def edit(id=None):
 
+    empty_arr = data[id].copy()
+    empty_arr["directors"] = ",".join(empty_arr["directors"])
 
-    empty_arr= data[id].copy()
-    empty_arr["directors"]=",".join(empty_arr["directors"])
-
-    return render_template('edit_item.html', newdata = empty_arr, id=id)
-
-
+    return render_template('edit_item.html', newdata=empty_arr, id=id)
 
 
 if __name__ == '__main__':
-   app.run(debug = True)
-
-
-
-
+    app.run(debug=True)

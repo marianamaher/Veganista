@@ -10,12 +10,12 @@
         $.each(last_data,function(key, value){
             console.log(value.stream)
             $('.display_docs').append('<p><div id="image"> <img id="thisimage" alt="documentary poster for '+value.title+'" src='+value.image+'></div>');
-            $('.display_docs').append('<p><div id="year"> <b>Year: </b>' +value.year+'</div>');
-            $('.display_docs').append('<div id="score"><b>Score: </b>' +value.score+' &#11088 &#11088 &#11088 &#11088 &#11088</div></p>');
-            $('.display_docs').append('<div id="summary"><b>Summary: </b>' +value.summary+'</div>');
-            $('.display_docs').append('<p><div id="directors"><b>Directors: </b>' +value.directors+'</div>');
-            $('.display_docs').append('<div id="directors"><b>Stream on: </b> <a href="http://127.0.0.1:5000/results_page/'+value.stream+'">' +value.stream+'</a></div>');
-            $('.display_docs').append('<button class="button-14" role="button"> Edit item </button></p>')
+            $('.display_docs5').append('<p><div id="year"> <b>Year: </b>' +value.year+'</div>');
+            $('.display_docs3').append('<div id="score"><b>Score: </b>' +value.score+' &#11088 &#11088 &#11088 &#11088 &#11088</div></p>');
+            $('.display_docs2').append('<div id="summary"><b>Summary: </b>' +value.summary+'</div>');
+            $('.display_docs4').append('<p><div id="directors"><b>Directors: </b>' +value.directors+'</div>');
+            $('.display_docs6').append('<div id="directors"><b>Stream on: </b> <a href="http://127.0.0.1:5000/results_page/'+value.stream+'">' +value.stream+'</a></div>');
+            $('.display_docs7').append('<button class="button-14" role="button"> Edit item </button></p>')
         
             $(".button-14").click(function(){
             window.location.href = ("/edit/" + value.id)
@@ -28,20 +28,29 @@
     })
 </script>
 
-<div class="container" id="view-container"> 
+<div class="container-fluid" id="view-container"> 
     
     <br></br>
     
-    <div id="final_results_div">
-        This is <b>{{lazycats_title}}</b>: 
+    <div class="row" id="final_results_div">
+        This is: {{lazycats_title}}
     </div>
     <p></p>
-    <div class="display_docs">
-
-    
+    <div class="row doc_row">
+        <div class="col-md-4 display_docs"></div>
+        <div class="col-md-5 display_docs2"></div>
     </div>
     <p></p>
-    
+    <div class="row doc_row">
+        <div class="col-md-4">
+            <div class="display_docs3"></div>
+            <div class="display_docs5"></div>
+            <div class="display_docs7"></div>
+        </div>
+        <div class="col-md-5 display_docs4">
+            <div class="display_docs6"></div>
+        </div>
+    </div>
 </div>
 
 
