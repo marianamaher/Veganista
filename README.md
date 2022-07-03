@@ -4,4 +4,4 @@ Database of documentaries about Veganism and Environmental issues. Application i
 
 Watch a short demo video of the application: 
 
-[![Veganista](static/veg_home.png)](https://www.youtube.com/watch?v=VIDEO-ID)]
+[![Veganista](static/veg_home.png)](https://youtu.be/W1SgTs7Z0Zc)]
